@@ -25,3 +25,9 @@ html
                 input#pw2.form-control(type='password', name='confirmPassword')
                 p=er_not_match
               button.btn.btn-primary(type='submit') Sign up
+
+            form(method='GET' action='/colorChange/' + thing_id)
+              div.form-group
+                label(for='color') Color:
+                input#color.form-control(name='color', value=color)
+              button.btn.btn-primary(type='submit') Change color
