@@ -136,12 +136,29 @@ app.post('/register', function(req, res){
 
 
 });
-app.post("/registerDevice", function (req, res){
+app.post("/registerDevice", async function (req, res){
   const deviceName = req.body["deviceName"];
   const deviceId = req.body["deviceId"];
-  let userNameRef = firebase.database().ref('users/'+ user.uid +'/devices/' + deviceId);
-  userNameRef.child('name').set(deviceName);
-  res.redirect('/');
+  const thingId = "led_raspberry:" + deviceId;
+  const link = 'http://localhost:3001/retrieve/' + thingId;
+  const response = await fetch(link);
+  const response_body = await response.json();
+  console.log(response_body.features.Ownership.properties)
+  if(!response_body.features.Ownership.properties.isClaimed){
+
+    const url = "http://localhost:3001/claimThing/" + thingId + '/' + user.email
+    await(fetch(url));
+    let userNameRef = firebase.database().ref('users/'+ user.uid +'/devices/' + deviceId);
+    await userNameRef.child('name').set(deviceName);
+    res.redirect('/');
+    res.send();
+
+  }
+  else{
+    res.render("deviceRegistration", {er_device_id: "already claimed!"});
+  }
+
+
 
 });
 

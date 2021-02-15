@@ -57,7 +57,7 @@ app.get('/retrieve/:tid', async function (req, res) {
 });
 
 app.get('/setColor/:tid/:color', async function (req, res) {
-    console.log(req.params)
+    // console.log(req.params)
     await ensureToken();
     const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/' + req.params.tid +'/features/ledLights/inbox/messages/ledColor?timeout=0', {
         method: 'POST',
@@ -66,6 +66,21 @@ app.get('/setColor/:tid/:color', async function (req, res) {
         body: "#" +req.params.color
     });
 
+    res.send("Success");
+});
+
+app.get('/claimThing/:tid/:email', async function (req, res) {
+    console.log(req.params)
+    await ensureToken();
+    const response =await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:myRspbLed/features/Ownership?timeout=0', {
+        method: 'PUT',
+        headers: {
+            'Authorization': "Bearer " + my_token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"properties":{"isClaimed": true, "ownership":req.params.email}})
+    });
+    console.log(response)
     res.send("Success");
 });
 
