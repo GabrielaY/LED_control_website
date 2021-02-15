@@ -65,9 +65,8 @@ app.get('/setColor/:tid/:color', async function (req, res) {
             'Authorization': "Bearer " + my_token},
         body: "#" +req.params.color
     });
-    console.log(response);
-    res.send("Success");
 
+    res.send("Success");
 });
 
 

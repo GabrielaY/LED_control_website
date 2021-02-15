@@ -4,10 +4,12 @@ let firebase = require("firebase/app");
 require("firebase/firestore");
 require("firebase/auth");
 let path = require("path");
+let user = null;
 let app = express();
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 let fetch = require('node-fetch');
+const render = require("pug");
 let port = 3000;
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -44,7 +46,43 @@ app.get('/retrieveInfo/:tid', async function (req, res) {
   const response_body = await response.json();
   res.render("index", {thing_id: response_body.thingId, led_color: response_body.features.ledLights.properties.color});
 });
+function checkSignIn(req, res){
+  if(user){
+    next();     //If a user is logged in, proceed to page
+  } else {
+    res.redirect('/')
+  }
+}
+app.get('/', function (req, res){
+  if(user){
+    res.render("homepage", {user: user});
+  }
+  else
+    res.render("homepage");
+});
+app.get('/register', function (req, res){
+  res.render("registration");
+});
+app.get('/login', function (req, res){
+  res.render("login");
+});
+app.post('/login', function (req, res){
+  const email = req.body["email"];
+  const password = req.body["password"];
 
+  firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed in
+        user = userCredential.user;
+        res.status(200);
+        res.redirect("/")
+        
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        res.render("login", {er_email_or_pass: errorMessage, email: email});
+      });
+});
 app.post('/register', function(req, res){
   const email = req.body["email"];
   const password = req.body["password"];
@@ -67,22 +105,26 @@ app.post('/register', function(req, res){
     matchError = "Password should match!";
   }
   if(errorFlag){
-    res.render("index", {er_password_weak: passError, email: email, er_mail: emailError,er_not_match: matchError});
+    res.render("registration", {er_password_weak: passError, email: email, er_mail: emailError,er_not_match: matchError});
   }
   else{
 
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in
-          const user = userCredential.user;
-          // ...
+          user = userCredential.user;
+          res.status(200);
+          res.redirect("/")
+
         })
         .catch((error) => {
           const errorMessage = error.message;
-          res.render("index", {er_mail: errorMessage, email: email});
+          res.render("registration", {er_mail: errorMessage, email: email});
 
 
         });
+
+
   }
 
 
