@@ -1,0 +1,16 @@
+block content
+    .main.container
+        .row
+            .col-md-6.col-md-offset-3
+                h1.display-4.m-b-2 Register a device
+
+                // register device form
+                form(method='POST' action='/registerDevice')
+                    div.form-group
+                        label(for='deviceName') Device name:
+                        input#deviceName.form-control(placeholder='e.g Bedroom lights', name='deviceName', value=deviceName)
+                    div.form-group
+                        label(for='deviceId') Device Id:
+                        input#deviceId.form-control(name='deviceId', value=deviceId)
+                        p=er_device_id
+                    button.btn.btn-primary(type='submit') Submit

@@ -3,6 +3,8 @@ let express = require("express");
 let firebase = require("firebase/app");
 require("firebase/firestore");
 require("firebase/auth");
+require("firebase/database");
+
 let path = require("path");
 let user = null;
 let app = express();
@@ -22,11 +24,12 @@ let firebaseConfig = {
   storageBucket: "led-controll-iot.appspot.com",
   messagingSenderId: "349527250122",
   appId: "1:349527250122:web:b3225a896e9bd54060d033",
-  measurementId: "G-9CJ4SE3GTY"
+  measurementId: "G-9CJ4SE3GTY",
+  databaseURL: "https://led-controll-iot-default-rtdb.firebaseio.com/",
 };
 // Initialize Firebase
 firebase["default"].initializeApp(firebaseConfig);
-
+const database = firebase.database();
 app.listen(port, function () {
   console.log("Example app listening at http://localhost:" + port);
 });
@@ -65,6 +68,9 @@ app.get('/register', function (req, res){
 });
 app.get('/login', function (req, res){
   res.render("login");
+});
+app.get('/registerDevice', function (req, res){
+  res.render("deviceRegistration");
 });
 app.post('/login', function (req, res){
   const email = req.body["email"];
@@ -113,6 +119,7 @@ app.post('/register', function(req, res){
         .then((userCredential) => {
           // Signed in
           user = userCredential.user;
+
           res.status(200);
           res.redirect("/")
 
@@ -127,6 +134,14 @@ app.post('/register', function(req, res){
 
   }
 
+
+});
+app.post("/registerDevice", function (req, res){
+  const deviceName = req.body["deviceName"];
+  const deviceId = req.body["deviceId"];
+  let userNameRef = firebase.database().ref('users/'+ user.uid +'/devices/' + deviceId);
+  userNameRef.child('name').set(deviceName);
+  res.redirect('/');
 
 });
 
