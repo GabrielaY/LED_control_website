@@ -34,7 +34,7 @@ app.listen(port, function () {
   console.log("Example app listening at http://localhost:" + port);
 });
 
-app.get('/colorChange/:tid', async function (req,res){
+app.get('/colorChange/:tid',checkSignIn, async function (req,res){
   const color = req.query.color;
   const thing_id = req.params.tid
   const link = 'http://localhost:3001/setColor/'+ thing_id+'/' + color;
@@ -42,7 +42,7 @@ app.get('/colorChange/:tid', async function (req,res){
   res.redirect("/retrieveInfo/" + thing_id)
 
 })
-app.get('/retrieveInfo/:tid', async function (req, res) {
+app.get('/retrieveInfo/:tid',checkSignIn, async function (req, res) {
   const thing_id = req.params.tid;
   const link = 'http://localhost:3001/retrieve/' + thing_id;
   const response = await fetch(link);
@@ -69,7 +69,7 @@ app.get('/register', function (req, res){
 app.get('/login', function (req, res){
   res.render("login");
 });
-app.get('/registerDevice', function (req, res){
+app.get('/registerDevice',checkSignIn, function (req, res){
   res.render("deviceRegistration");
 });
 app.post('/login', function (req, res){
@@ -143,15 +143,24 @@ app.post("/registerDevice", async function (req, res){
   const link = 'http://localhost:3001/retrieve/' + thingId;
   const response = await fetch(link);
   const response_body = await response.json();
-  console.log(response_body.features.Ownership.properties)
   if(!response_body.features.Ownership.properties.isClaimed){
+    await firebase.database().ref('users/' + user.uid + '/devices/' + deviceId + "/name").once("value", async snapshot => {
+      if (snapshot.exists()) {
+        const name = snapshot.val();
+        res.status(400);
+        res.render("deviceRegistration", {er_device_id: "You've already registered a device with this name!"});
 
-    const url = "http://localhost:3001/claimThing/" + thingId + '/' + user.email
-    await(fetch(url));
-    let userNameRef = firebase.database().ref('users/'+ user.uid +'/devices/' + deviceId);
-    await userNameRef.child('name').set(deviceName);
-    res.redirect('/');
-    res.send();
+
+      } else {
+        const url = "http://localhost:3001/claimThing/" + thingId + '/' + user.email
+        await (fetch(url));
+        let userNameRef = firebase.database().ref('users/' + user.uid + '/devices/' + deviceId);
+        await userNameRef.child('name').set(deviceName);
+        res.redirect('/');
+
+      }
+    })
+
 
   }
   else{

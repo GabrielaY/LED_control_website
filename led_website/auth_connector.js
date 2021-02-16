@@ -80,7 +80,6 @@ app.get('/claimThing/:tid/:email', async function (req, res) {
         },
         body: JSON.stringify({"properties":{"isClaimed": true, "ownership":req.params.email}})
     });
-    console.log(response)
     res.send("Success");
 });
 
