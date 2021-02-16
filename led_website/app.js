@@ -44,21 +44,41 @@ app.get('/colorChange/:tid',checkSignIn, async function (req,res){
 })
 app.get('/retrieveInfo/:tid',checkSignIn, async function (req, res) {
   const thing_id = req.params.tid;
-  const link = 'http://localhost:3001/retrieve/' + thing_id;
+  const link = 'http://localhost:3001/retrieve/led_raspberry:' + thing_id;
   const response = await fetch(link);
   const response_body = await response.json();
   res.render("index", {thing_id: response_body.thingId, led_color: response_body.features.ledLights.properties.color});
 });
-function checkSignIn(req, res){
+function checkSignIn(req, res, next){
   if(user){
     next();     //If a user is logged in, proceed to page
   } else {
     res.redirect('/')
   }
 }
-app.get('/', function (req, res){
+app.get('/', async function (req, res){
+
   if(user){
-    res.render("homepage", {user: user});
+    await database.ref().child("users").child(user.uid).child("devices").get().then(function (snapshot){
+      if(snapshot.exists()){
+        const things =  snapshot.val();
+        let names = new Array();
+        for(let key in things){
+          names.push({
+            key: key,
+            value:things[key]["name"]
+          });
+
+        }
+        console.log(names);
+        res.render("homepage", {user: user, things:names});
+
+      }
+      else{
+        res.render("homepage", {user:user});
+      }
+    })
+
   }
   else
     res.render("homepage");

@@ -4,6 +4,13 @@ html
     body
         if user
             p You are logged in!
+            if things
+                ul
+                    each thing in things
+                        a(href="/retrieveInfo/" + thing.key)
+                            button(type="button")=thing.value + " ID: " + thing.key
+
+
         else
             p Welcome to PixieColor!
             a(href="/register")
