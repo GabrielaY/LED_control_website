@@ -2,6 +2,7 @@
 let express = require("express");
 let request = require("request");
 let my_token = "";
+let offTimer;
 let my_token_expire_time = Date.now();
 let app = express();
 let fetch = require('node-fetch');
@@ -47,24 +48,40 @@ async function ensureToken(){
 app.get('/retrieve/:tid', async function (req, res) {
 
     await ensureToken();
-    const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/' + req.params.tid , {
+    const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid , {
         headers: {
             'Authorization': "Bearer " + my_token}
     });
+
     const thing_info = await response.json()
     res.status(202);
     res.send(thing_info);
 });
 
 app.get('/setColor/:tid/:color', async function (req, res) {
-    // console.log(req.params)
+
     await ensureToken();
-    const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/' + req.params.tid +'/features/ledLights/inbox/messages/ledColor?timeout=0', {
+    const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/ledColor?timeout=0', {
         method: 'POST',
         headers: {
             'Authorization': "Bearer " + my_token},
         body: "#" +req.params.color
     });
+
+    res.send("Success");
+});
+app.get('/setTimer/:tid/:time', async function (req, res) {
+
+    await ensureToken();
+    offTimer = setTimeout(async function() {
+        const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/ledColor?timeout=0', {
+            method: 'POST',
+            headers: {
+                'Authorization': "Bearer " + my_token},
+            body: "#000000"
+        });
+    }, 9000)
+
 
     res.send("Success");
 });

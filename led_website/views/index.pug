@@ -10,24 +10,11 @@ html
           .col-md-6.col-md-offset-3
             h1.display-4.m-b-2 Sign Up
 
-            // register form
-            form(method='POST' action='/register')
-              div.form-group
-                label(for='email') Email:
-                input#email.form-control(type='email', placeholder='name@email.com', name='email', value=email)
-                p=er_mail
-              div.form-group
-                label(for='pw') Password:
-                input#pw.form-control(type='password', name='password', value=password)
-                p=er_password_weak
-              div.form-group
-                label(for='pw2') Confirm Password:
-                input#pw2.form-control(type='password', name='confirmPassword')
-                p=er_not_match
-              button.btn.btn-primary(type='submit') Sign up
-
             form(method='GET' action='/colorChange/' + thing_id)
               div.form-group
                 label(for='color') Color:
                 input#color.form-control(name='color', value=color)
               button.btn.btn-primary(type='submit') Change color
+
+            a(href="/setTimer/" + thing_id)
+              button(type="button") Timer

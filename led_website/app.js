@@ -42,12 +42,21 @@ app.get('/colorChange/:tid',checkSignIn, async function (req,res){
   res.redirect("/retrieveInfo/" + thing_id)
 
 })
+app.get('/setTimer/:tid',checkSignIn, async function (req,res){
+  // const time = req.query.color;
+  const thing_id = req.params.tid
+  const link = 'http://localhost:3001/setTimer/'+ thing_id+'/' + 12;
+  await fetch(link);
+  res.redirect("/retrieveInfo/" + thing_id)
+
+})
 app.get('/retrieveInfo/:tid',checkSignIn, async function (req, res) {
   const thing_id = req.params.tid;
-  const link = 'http://localhost:3001/retrieve/led_raspberry:' + thing_id;
+  const link = 'http://localhost:3001/retrieve/' + thing_id;
   const response = await fetch(link);
   const response_body = await response.json();
-  res.render("index", {thing_id: response_body.thingId, led_color: response_body.features.ledLights.properties.color});
+  const thing_id_split= response_body.thingId.split(":")
+  res.render("index", {thing_id: thing_id_split[1], led_color: response_body.features.ledLights.properties.color});
 });
 function checkSignIn(req, res, next){
   if(user){
@@ -70,7 +79,6 @@ app.get('/', async function (req, res){
           });
 
         }
-        console.log(names);
         res.render("homepage", {user: user, things:names});
 
       }
