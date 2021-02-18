@@ -80,9 +80,18 @@ app.get('/setTimer/:tid/:time', async function (req, res) {
                 'Authorization': "Bearer " + my_token},
             body: "#000000"
         });
-    }, 9000)
+        await fetch("http://localhost:3000/unlockTimerFor/" + req.params.tid,{
+            method: 'POST',
+        });
+    }, req.params.time)
 
 
+    res.send("Success");
+});
+
+app.get('/stopTimer/:tid', async function (req, res) {
+
+    clearTimeout(offTimer);
     res.send("Success");
 });
 

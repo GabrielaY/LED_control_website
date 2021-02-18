@@ -5,16 +5,18 @@ html
     p= thing_id
     p= led_color
     block content
-      .main.container
-        .row
-          .col-md-6.col-md-offset-3
-            h1.display-4.m-b-2 Sign Up
-
             form(method='GET' action='/colorChange/' + thing_id)
               div.form-group
                 label(for='color') Color:
                 input#color.form-control(name='color', value=color)
               button.btn.btn-primary(type='submit') Change color
-
-            a(href="/setTimer/" + thing_id)
-              button(type="button") Timer
+            if timer_locked
+                a(href="/stopTimer/" + thing_id)
+                    button(type="button") Cancel
+            else
+                a(href="/setTimer/" + thing_id + "/" + 0.5)
+                  button(type="button") 5
+                a(href="/setTimer/" + thing_id + "/" + 15)
+                  button(type="button") 15
+                a(href="/setTimer/" + thing_id + "/" + 30)
+                  button(type="button") 30

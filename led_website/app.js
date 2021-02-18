@@ -7,6 +7,7 @@ require("firebase/database");
 
 let path = require("path");
 let user = null;
+let timerLocked = new Array();
 let app = express();
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
@@ -42,13 +43,21 @@ app.get('/colorChange/:tid',checkSignIn, async function (req,res){
   res.redirect("/retrieveInfo/" + thing_id)
 
 })
-app.get('/setTimer/:tid',checkSignIn, async function (req,res){
-  // const time = req.query.color;
-  const thing_id = req.params.tid
-  const link = 'http://localhost:3001/setTimer/'+ thing_id+'/' + 12;
+app.get('/setTimer/:tid/:time',checkSignIn, async function (req,res){
+  const time = req.params.time;
+  const thing_id = req.params.tid;
+  const link = 'http://localhost:3001/setTimer/'+ thing_id+'/' + time*60000;
   await fetch(link);
+  timerLocked.push(thing_id);
   res.redirect("/retrieveInfo/" + thing_id)
 
+})
+app.get('/stopTimer/:tid', checkSignIn, async function (req, res){
+  const thing_id = req.params.tid;
+  const link = 'http://localhost:3001/stopTimer/'+ thing_id;
+  await fetch(link);
+  timerLocked.splice(timerLocked.indexOf(thing_id));
+  res.redirect("/retrieveInfo/" + thing_id)
 })
 app.get('/retrieveInfo/:tid',checkSignIn, async function (req, res) {
   const thing_id = req.params.tid;
@@ -56,7 +65,14 @@ app.get('/retrieveInfo/:tid',checkSignIn, async function (req, res) {
   const response = await fetch(link);
   const response_body = await response.json();
   const thing_id_split= response_body.thingId.split(":")
-  res.render("index", {thing_id: thing_id_split[1], led_color: response_body.features.ledLights.properties.color});
+  if (timerLocked.includes(thing_id_split[1])){
+    res.render("index", {thing_id: thing_id_split[1], led_color: response_body.features.ledLights.properties.color, timer_locked: true});
+
+  }
+  else{
+    res.render("index", {thing_id: thing_id_split[1], led_color: response_body.features.ledLights.properties.color});
+
+  }
 });
 function checkSignIn(req, res, next){
   if(user){
@@ -100,6 +116,10 @@ app.get('/login', function (req, res){
 app.get('/registerDevice',checkSignIn, function (req, res){
   res.render("deviceRegistration");
 });
+
+app.post('/unlockTimerFor/:tid', function (req, res){
+  timerLocked.splice(timerLocked.indexOf(req.params.tid));
+})
 app.post('/login', function (req, res){
   const email = req.body["email"];
   const password = req.body["password"];
