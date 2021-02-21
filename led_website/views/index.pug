@@ -1,22 +1,94 @@
 html
-  head
-    title= "Text"
-  body
-    p= thing_id
-    p= led_color
-    block content
+    head
+        title= "Text"
+    body
+        p= thing_id
+        p= led_color
+        block content
             form(method='GET' action='/colorChange/' + thing_id)
-              div.form-group
-                label(for='color') Color:
-                input#color.form-control(name='color', value=color)
-              button.btn.btn-primary(type='submit') Change color
+                div.form-group
+                    section#s_color_picker_id
+                        canvas#color_picker(width=200, height=200)
+                    input#s_color.form-control(name='color', value=color)
+                button.btn.btn-primary(type='submit') Change color
             if timer_locked
                 a(href="/stopTimer/" + thing_id)
                     button(type="button") Cancel
             else
                 a(href="/setTimer/" + thing_id + "/" + 0.5)
-                  button(type="button") 5
+                    button(type="button") 5
                 a(href="/setTimer/" + thing_id + "/" + 15)
-                  button(type="button") 15
+                    button(type="button") 15
                 a(href="/setTimer/" + thing_id + "/" + 30)
-                  button(type="button") 30
+                    button(type="button") 30
+            script.
+                function componentToHex(c) {
+                    var hex = c.toString(16);
+                    return hex.length == 1 ? "0" + hex : hex;
+                }
+
+                function rgbToHex(r, g, b) {
+                    return componentToHex(r) + componentToHex(g) + componentToHex(b);
+                }
+
+                color_picker = document.getElementById("color_picker");
+                color_id = document.getElementById("color_id");
+                color_picker.onmousedown = select_color;
+                color_picker_add();
+
+                function color_picker_add() {
+                    color_picker_ = color_picker.getContext("2d"),
+                        center_x = (color_picker.width) / 2,
+                        center_y = (color_picker.height) / 2,
+                        sx = center_x,
+                        sy = center_y;
+                    palette = new color_picker_element(center_x, center_y, sx, sy);
+                    palette.draw();
+                }
+
+                function select_color(e) {
+                    let x = e.pageX - color_picker.offsetLeft,
+                        y = e.pageY - color_picker.offsetTop,
+                        pixel = color_picker.getContext("2d").getImageData(x, y, 1, 1).data,
+                        pixelColor = "rgb(" + pixel[0] + ", " + pixel[1] + ", " + pixel[2] + ")";
+                    s_color.style.backgroundColor = pixelColor;
+                    color = rgbToHex(pixel[0], pixel[1], pixel[2]);
+                    s_color.value = color;
+                }
+
+                function color_picker_element(center_x, center_y, sx, sy) {
+                    this.center_x = center_x;
+                    this.center_y = center_y;
+                    this.sx = sx;
+                    this.sy = sy;
+                    this.draw = function () {
+                        for (var i = 0; i < 360; i += 0.1) {
+                            var rad = (i - 45) * (Math.PI) / 180;
+                            color_picker_.strokeStyle = "hsla(" + i + ", 100%, 50%, 1.0)";
+                            color_picker_.beginPath();
+                            color_picker_.moveTo(center_x, center_y);
+                            color_picker_.lineTo(center_x + sx * Math.cos(-rad), center_y + sy * Math.sin(-rad));
+                            color_picker_.stroke();
+                        }
+                    }
+                }
+
+            style.
+                #s_color_picker_id {
+                    text-align: center;
+                }
+
+                #color_picker{
+                    border-radius: 50%;
+                }
+                #color_id {
+                    height: 100px;
+                    background-color: #000;
+                }
+                #s_color {
+                    color: transparent;
+                    border: none;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%
+                }
