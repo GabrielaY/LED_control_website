@@ -184,6 +184,14 @@ app.post('/register', function(req, res){
 
 
 });
+
+app.get("/turnOff/:tid", async function (req, res){
+  const thingId = req.params.tid;
+  let link = 'http://localhost:3001/turnOff/' + thingId;
+  await fetch(link);
+  res.redirect("/retrieveInfo/" + thingId);
+});
+
 app.get("/turnOn/:tid", async function (req, res){
   const thingId = req.params.tid;
   let link = 'http://localhost:3001/retrieve/' + thingId;
@@ -192,8 +200,7 @@ app.get("/turnOn/:tid", async function (req, res){
   let color = (response_body.features.ledLights.properties.color).split("#");
   color = color[1];
   link = 'http://localhost:3001/turnOn/'+ thingId+'/' + color;
-  const resi = await fetch(link);
-  console.log(resi);
+  await fetch(link);
   res.redirect("/retrieveInfo/" + thingId);
 })
 app.post("/registerDevice", async function (req, res){
