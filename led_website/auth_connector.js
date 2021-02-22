@@ -70,6 +70,19 @@ app.get('/setColor/:tid/:color', async function (req, res) {
 
     res.send("Success");
 });
+app.get('/turnOn/:tid/:color', async function (req, res) {
+
+    await ensureToken();
+    const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/on?timeout=0', {
+        method: 'POST',
+        headers: {
+            'Authorization': "Bearer " + my_token},
+        body: "#" +req.params.color
+    });
+    console.log(response);
+
+    res.send("Success");
+});
 app.get('/setTimer/:tid/:time', async function (req, res) {
 
     await ensureToken();

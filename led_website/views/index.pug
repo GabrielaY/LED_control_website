@@ -21,6 +21,8 @@ html
                     button(type="button") 15
                 a(href="/setTimer/" + thing_id + "/" + 30)
                     button(type="button") 30
+            a(href="/turnON/" + thing_id)
+                button(type="button") ON
             script.
                 function componentToHex(c) {
                     var hex = c.toString(16);
