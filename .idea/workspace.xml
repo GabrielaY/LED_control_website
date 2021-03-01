@@ -23,6 +23,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/led_website/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/led_website/auth_connector.js" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/auth_connector.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/led_website/views/index.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/index.pug" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,7 +68,7 @@
       <recent name="C:\Users\gabriela\Documents\LED_control_website\led_website\views" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.auth.js">
+  <component name="RunManager" selected="Node.js.app.js">
     <configuration name="app.js" type="NodeJSConfigurationType" path-to-node="$PROJECT_DIR$/../../../../Program Files/nodejs/node" nameIsGenerated="true" path-to-js-file="led_website/app.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
@@ -96,7 +98,12 @@
       <workItem from="1613478731610" duration="10128000" />
       <workItem from="1613647458010" duration="10010000" />
       <workItem from="1613903806564" duration="16131000" />
-      <workItem from="1613995850570" duration="5728000" />
+      <workItem from="1613995850570" duration="5856000" />
+      <workItem from="1614072590126" duration="6357000" />
+      <workItem from="1614107822004" duration="3208000" />
+      <workItem from="1614172810498" duration="2615000" />
+      <workItem from="1614349092555" duration="1463000" />
+      <workItem from="1614625059841" duration="3062000" />
     </task>
     <servers />
   </component>
@@ -124,22 +131,22 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1613296335315" />
-    <state width="1237" height="183" key="GridCell.Tab.0.bottom" timestamp="1613999753172">
+    <state width="1237" height="183" key="GridCell.Tab.0.bottom" timestamp="1614627747367">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1613999753172" />
-    <state width="1237" height="183" key="GridCell.Tab.0.center" timestamp="1613999753172">
+    <state width="1237" height="183" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1614627747367" />
+    <state width="1237" height="183" key="GridCell.Tab.0.center" timestamp="1614627747367">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1613999753172" />
-    <state width="1237" height="183" key="GridCell.Tab.0.left" timestamp="1613999753171">
+    <state width="1237" height="183" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1614627747367" />
+    <state width="1237" height="183" key="GridCell.Tab.0.left" timestamp="1614627747367">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1613999753171" />
-    <state width="1237" height="183" key="GridCell.Tab.0.right" timestamp="1613999753172">
+    <state width="1237" height="183" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1614627747367" />
+    <state width="1237" height="183" key="GridCell.Tab.0.right" timestamp="1614627747367">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1613999753172" />
+    <state width="1237" height="183" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1614627747367" />
     <state x="0" y="0" width="1020" height="667" key="dock-window-1" timestamp="1613904874219">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

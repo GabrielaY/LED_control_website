@@ -36,6 +36,7 @@ function getToken() {
 app.listen(port, function () {
     console.log("Example app listening at http://localhost:" + port);
 });
+
 async function ensureToken(){
     if(my_token_expire_time < Date.now()){
         let r = await getToken();
@@ -66,6 +67,18 @@ app.get('/setColor/:tid/:color', async function (req, res) {
         headers: {
             'Authorization': "Bearer " + my_token},
         body: "#" +req.params.color
+    });
+
+    res.send("Success");
+});
+app.post('/colorTransition/:tid/', async function (req, res) {
+    console.log(req.body);
+    await ensureToken();
+    const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/colorTransition?timeout=0', {
+        method: 'POST',
+        headers: {
+            'Authorization': "Bearer " + my_token},
+        body: req.body  
     });
 
     res.send("Success");

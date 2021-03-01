@@ -6,6 +6,8 @@ require("firebase/auth");
 require("firebase/database");
 
 let path = require("path");
+const multer = require('multer');
+const getColors = require('get-image-colors')
 let user = null;
 let timerLocked = new Array();
 let app = express();
@@ -13,11 +15,50 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 let fetch = require('node-fetch');
 const render = require("pug");
+let image = false;
+let colors = false;
 let port = 3000;
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-
+//multer options
+const upload = multer({
+  limits: {
+    fileSize: 1000000,
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(png|jpg|jpeg)$/)){
+      cb(new Error('Please upload an image.'))
+    }
+    cb(undefined, true)
+  }
+})
+image: {
+  type: Buffer
+}
+app.post('/upload/:tid', upload.single('upload'), async (req, res) => {
+  try {
+    image = req.file.buffer
+    colors =  await getColors(image, 'image/png');
+    colors = colors.map(color => color.hex())
+    console.log(colors);
+    const thing_id = req.params.tid;
+    console.log(thing_id);
+    const link = 'http://localhost:3001/colorTransition/' + thing_id;
+    let r = await fetch(link, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(colors)
+    });
+    res.redirect('back');
+  } catch (e){
+    res.status(400).send(e)
+  }
+}, (error, req, res, next) => {
+  res.status(400).send({error: error.message})
+})
 let firebaseConfig = {
   apiKey: "AIzaSyAlB2GVoYR_aCneXN69zabcUbp5vdgXSR8",
   authDomain: "led-controll-iot.firebaseapp.com",
@@ -40,7 +81,7 @@ app.get('/colorChange/:tid',checkSignIn, async function (req,res){
   const thing_id = req.params.tid
   const link = 'http://localhost:3001/setColor/'+ thing_id+'/' + color;
   await fetch(link);
-  res.redirect("/retrieveInfo/" + thing_id)
+  res.redirect('back');
 
 })
 app.get('/setTimer/:tid/:time',checkSignIn, async function (req,res){
@@ -49,7 +90,7 @@ app.get('/setTimer/:tid/:time',checkSignIn, async function (req,res){
   const link = 'http://localhost:3001/setTimer/'+ thing_id+'/' + time*60000;
   await fetch(link);
   timerLocked.push(thing_id);
-  res.redirect("/retrieveInfo/" + thing_id)
+  res.redirect('back');
 
 })
 app.get('/stopTimer/:tid', checkSignIn, async function (req, res){
@@ -57,20 +98,19 @@ app.get('/stopTimer/:tid', checkSignIn, async function (req, res){
   const link = 'http://localhost:3001/stopTimer/'+ thing_id;
   await fetch(link);
   timerLocked.splice(timerLocked.indexOf(thing_id));
-  res.redirect("/retrieveInfo/" + thing_id)
+  res.redirect('back');
 })
 app.get('/retrieveInfo/:tid',checkSignIn, async function (req, res) {
   const thing_id = req.params.tid;
   const link = 'http://localhost:3001/retrieve/' + thing_id;
   const response = await fetch(link);
   const response_body = await response.json();
-  const thing_id_split= response_body.thingId.split(":")
-  if (timerLocked.includes(thing_id_split[1])){
-    res.render("index", {thing_id: thing_id_split[1], led_color: response_body.features.ledLights.properties.color, timer_locked: true});
+  if (timerLocked.includes(thing_id)){
+    res.render("index", {thing_id: thing_id, led_color: response_body.features.ledLights.properties.color, timer_locked: true, image:image.toString('base64'), colors:colors});
 
   }
   else{
-    res.render("index", {thing_id: thing_id_split[1], led_color: response_body.features.ledLights.properties.color});
+    res.render("index", {thing_id: thing_id, led_color: response_body.features.ledLights.properties.color, image:image.toString('base64'), colors:colors});
 
   }
 });
