@@ -1,10 +1,10 @@
 "use strict";
+let httpProxy = require('http-proxy');
 let express = require("express");
 let firebase = require("firebase/app");
 require("firebase/firestore");
 require("firebase/auth");
 require("firebase/database");
-let httpProxy = require('http-proxy');
 let path = require("path");
 const multer = require('multer');
 const getColors = require('get-image-colors')
@@ -18,32 +18,31 @@ const render = require("pug");
 let image = false;
 let colors = false;
 let port = 3000;
+let postUrls = ["/things/:tid/color","/things/:tid/state",""]
 let serverProxy = httpProxy.createProxyServer();
 let l = "http://localhost:3001/"
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-app.get("/things/:tid", sendToProxy(), ogiEDebel());
-app.post("/things/:tid/color", sendToProxy(), testHandler());
-
-
-function thingsGetRequest(){
+app.get("/things/:tid", sendToProxy());
+app.post("/things/:tid/color", sendToProxy());
+serverProxy.on('proxyReq', (proxyReq, req) => {
+  if (req.body) {
+    const bodyData = JSON.stringify(req.body);
+    // incase if content-type is application/x-www-form-urlencoded -> we need to change to application/json
+    proxyReq.setHeader('Content-Type','application/json');
+    proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+    // stream the content
+    proxyReq.write(bodyData);
+  }
+});
+function sendToProxy() {
   return async (req, res) => {
-    await serverProxy.web(req, res, {target: l});
+    console.log(req.url)
+    console.log(req.body);
+    console.log(req.method);
+    serverProxy.web(req, res, {target: l});
   }
 }
-function sendToProxy(){
-  return async (req, res, next) => {
-    await serverProxy.web(req, res, {target: l});
-    next();
-  }
-}
-function testHandler() {
-  return async (req, res) => {
-    console.log("vliza");
-    res.redirect("/");
-  }
-}
-
 //multer options
 const upload = multer({
   limits: {

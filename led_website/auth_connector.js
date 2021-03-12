@@ -2,6 +2,7 @@
 let express = require("express");
 let request = require("request");
 let my_token = "";
+let path = require("path");
 let offTimer;
 let my_token_expire_time = Date.now();
 let app = express();
@@ -9,6 +10,9 @@ let fetch = require('node-fetch');
 let port = 3001;
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
+const render = require("pug");
 
 
 let options = {
@@ -54,9 +58,10 @@ app.get('/things/:tid', async function (req, res) {
             'Authorization': "Bearer " + my_token}
     });
 
-    const thing_info = await response.json()
+    const response_body = await response.json()
     res.status(202);
-    res.send(thing_info);
+    const thing_id = (response_body.thingId.split(':'))[1]
+    res.render("index", {thing_id: thing_id, led_color: response_body.features.ledLights.properties.color});
 });
 
 app.post('/things/:tid/color', async function (req, res) {
@@ -68,8 +73,11 @@ app.post('/things/:tid/color', async function (req, res) {
             'Authorization': "Bearer " + my_token},
         body: "#" +color
     });
-    res.send("Success");
+    res.status(202);
+    console.log(req.params.tid);
+    res.redirect("/things/" + req.params.tid);
 });
+
 app.post('/colorTransition/:tid/', async function (req, res) {
     console.log(req.body);
     await ensureToken();
