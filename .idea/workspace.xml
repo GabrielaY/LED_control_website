@@ -61,7 +61,14 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/led_website/auth_connector.js" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -103,7 +110,14 @@
       <workItem from="1614107822004" duration="3208000" />
       <workItem from="1614172810498" duration="2615000" />
       <workItem from="1614349092555" duration="1463000" />
-      <workItem from="1614625059841" duration="3062000" />
+      <workItem from="1614625059841" duration="3157000" />
+      <workItem from="1614699648445" duration="3578000" />
+      <workItem from="1615052404640" duration="14000" />
+      <workItem from="1615114652679" duration="734000" />
+      <workItem from="1615276150180" duration="2923000" />
+      <workItem from="1615308096750" duration="958000" />
+      <workItem from="1615357358557" duration="13091000" />
+      <workItem from="1615468324234" duration="11229000" />
     </task>
     <servers />
   </component>
@@ -131,22 +145,22 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1613296335315" />
-    <state width="1237" height="183" key="GridCell.Tab.0.bottom" timestamp="1614627747367">
+    <state width="1237" height="183" key="GridCell.Tab.0.bottom" timestamp="1615479889316">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1614627747367" />
-    <state width="1237" height="183" key="GridCell.Tab.0.center" timestamp="1614627747367">
+    <state width="1237" height="183" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1615479889316" />
+    <state width="1237" height="183" key="GridCell.Tab.0.center" timestamp="1615479889315">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1614627747367" />
-    <state width="1237" height="183" key="GridCell.Tab.0.left" timestamp="1614627747367">
+    <state width="1237" height="183" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1615479889315" />
+    <state width="1237" height="183" key="GridCell.Tab.0.left" timestamp="1615479889315">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1614627747367" />
-    <state width="1237" height="183" key="GridCell.Tab.0.right" timestamp="1614627747367">
+    <state width="1237" height="183" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1615479889315" />
+    <state width="1237" height="183" key="GridCell.Tab.0.right" timestamp="1615479889316">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1614627747367" />
+    <state width="1237" height="183" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1615479889316" />
     <state x="0" y="0" width="1020" height="667" key="dock-window-1" timestamp="1613904874219">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

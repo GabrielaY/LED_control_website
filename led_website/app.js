@@ -4,7 +4,7 @@ let firebase = require("firebase/app");
 require("firebase/firestore");
 require("firebase/auth");
 require("firebase/database");
-
+let httpProxy = require('http-proxy');
 let path = require("path");
 const multer = require('multer');
 const getColors = require('get-image-colors')
@@ -18,8 +18,31 @@ const render = require("pug");
 let image = false;
 let colors = false;
 let port = 3000;
+let serverProxy = httpProxy.createProxyServer();
+let l = "http://localhost:3001/"
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.get("/things/:tid", sendToProxy(), ogiEDebel());
+app.post("/things/:tid/color", sendToProxy(), testHandler());
+
+
+function thingsGetRequest(){
+  return async (req, res) => {
+    await serverProxy.web(req, res, {target: l});
+  }
+}
+function sendToProxy(){
+  return async (req, res, next) => {
+    await serverProxy.web(req, res, {target: l});
+    next();
+  }
+}
+function testHandler() {
+  return async (req, res) => {
+    console.log("vliza");
+    res.redirect("/");
+  }
+}
 
 //multer options
 const upload = multer({
@@ -36,6 +59,8 @@ const upload = multer({
 image: {
   type: Buffer
 }
+
+// POST /things/:tid/photo
 app.post('/upload/:tid', upload.single('upload'), async (req, res) => {
   try {
     image = req.file.buffer
@@ -76,6 +101,8 @@ app.listen(port, function () {
   console.log("Example app listening at http://localhost:" + port);
 });
 
+// PUT /things/:tid/color
+// Body: JSON with color {"color": "#ffaaff"}
 app.get('/colorChange/:tid',checkSignIn, async function (req,res){
   const color = req.query.color;
   const thing_id = req.params.tid
@@ -84,6 +111,10 @@ app.get('/colorChange/:tid',checkSignIn, async function (req,res){
   res.redirect('back');
 
 })
+
+// POST /things/:tid/timers
+// Body: JSON with time field {"time": 123456}
+// Response: JSON with timer id {"id": 123123}
 app.get('/setTimer/:tid/:time',checkSignIn, async function (req,res){
   const time = req.params.time;
   const thing_id = req.params.tid;
@@ -93,6 +124,7 @@ app.get('/setTimer/:tid/:time',checkSignIn, async function (req,res){
   res.redirect('back');
 
 })
+// DELETE /things/:tid/timers/:timerid
 app.get('/stopTimer/:tid', checkSignIn, async function (req, res){
   const thing_id = req.params.tid;
   const link = 'http://localhost:3001/stopTimer/'+ thing_id;
@@ -100,10 +132,12 @@ app.get('/stopTimer/:tid', checkSignIn, async function (req, res){
   timerLocked.splice(timerLocked.indexOf(thing_id));
   res.redirect('back');
 })
-app.get('/retrieveInfo/:tid',checkSignIn, async function (req, res) {
+
+// GET /things/:tid
+app.get('/user/things/:tid',checkSignIn, async function (req, res) {
   const thing_id = req.params.tid;
-  const link = 'http://localhost:3001/retrieve/' + thing_id;
-  const response = await fetch(link);
+  const response = await fetch(new URL("/things/" + thing_id, "http://localhost:3000"));
+  console.log(response);
   const response_body = await response.json();
   if (timerLocked.includes(thing_id)){
     res.render("index", {thing_id: thing_id, led_color: response_body.features.ledLights.properties.color, timer_locked: true, image:image.toString('base64'), colors:colors});
@@ -121,6 +155,7 @@ function checkSignIn(req, res, next){
     res.redirect('/')
   }
 }
+// GET /things
 app.get('/', async function (req, res){
 
   if(user){
@@ -224,14 +259,17 @@ app.post('/register', function(req, res){
 
 
 });
-
+// PUT /things/:tid/state
+// Body: JSON with state {"state": true}
 app.get("/turnOff/:tid", async function (req, res){
   const thingId = req.params.tid;
   let link = 'http://localhost:3001/turnOff/' + thingId;
   await fetch(link);
   res.redirect("/retrieveInfo/" + thingId);
 });
-
+// PUT /things/:tid/state
+// MERGE WITH ABOVE
+// Body: JSON with state {"state": false}
 app.get("/turnOn/:tid", async function (req, res){
   const thingId = req.params.tid;
   let link = 'http://localhost:3001/retrieve/' + thingId;
@@ -243,17 +281,19 @@ app.get("/turnOn/:tid", async function (req, res){
   await fetch(link);
   res.redirect("/retrieveInfo/" + thingId);
 })
+// POST /things
 app.post("/registerDevice", async function (req, res){
   const deviceName = req.body["deviceName"];
   const thingId = req.body["deviceId"];
-  const link = 'http://localhost:3001/retrieve/' + thingId;
+  const link = 'http://localhost:3001/thing/' + thingId;
   const response = await fetch(link);
+  // fetch "/thing/" + thingId
   const response_body = await response.json();
   if(!response_body.features.Ownership.properties.isClaimed){
     await firebase.database().ref('users/' + user.uid + '/devices/' + deviceId + "/name").once("value", async snapshot => {
       if (snapshot.exists()) {
         const name = snapshot.val();
-        res.status(400);
+        res.status(403);
         res.render("deviceRegistration", {er_device_id: "You've already registered a device with this name!"});
 
 

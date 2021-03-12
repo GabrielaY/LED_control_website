@@ -5,7 +5,7 @@ html
         p= thing_id
         p= led_color
         block content
-            form(method='GET' action='/colorChange/' + thing_id)
+            form(method='POST' action='/things/' + thing_id + "/color")
                 div.form-group
                     section#s_color_picker_id
                         canvas#color_picker(width=200, height=200)

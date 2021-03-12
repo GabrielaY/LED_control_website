@@ -46,7 +46,7 @@ async function ensureToken(){
     }
 };
 
-app.get('/retrieve/:tid', async function (req, res) {
+app.get('/things/:tid', async function (req, res) {
 
     await ensureToken();
     const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid , {
@@ -59,16 +59,15 @@ app.get('/retrieve/:tid', async function (req, res) {
     res.send(thing_info);
 });
 
-app.get('/setColor/:tid/:color', async function (req, res) {
-
+app.post('/things/:tid/color', async function (req, res) {
+    const color = req.query.color;
     await ensureToken();
-    const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/ledColor?timeout=0', {
+    await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/ledColor?timeout=0', {
         method: 'POST',
         headers: {
             'Authorization': "Bearer " + my_token},
-        body: "#" +req.params.color
+        body: "#" +color
     });
-
     res.send("Success");
 });
 app.post('/colorTransition/:tid/', async function (req, res) {
