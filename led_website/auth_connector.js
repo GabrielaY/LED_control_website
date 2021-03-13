@@ -58,7 +58,7 @@ function getThingInfo(){
             headers: {
                 'Authorization': "Bearer " + my_token}
         });
-        console.log(res.body.status);
+
         if(res.body.status == 404){
             res.status(404);
             res.redirect(url.format({
@@ -184,7 +184,11 @@ app.post('/things', ensureToken(), getThingInfo(), async function (req,res, next
     }
     else{
         res.status(403);
-        res.render("deviceRegistration", {er_device_id: "A device with this name has already been registred!"});
+        res.redirect(url.format({
+            pathname:"/registerDevice",
+            query: {
+                "error": "A device with this ID has already been registered!"
+            }}))
 
     }
 

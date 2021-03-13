@@ -11,7 +11,6 @@ let path = require("path");
 const multer = require('multer');
 const getColors = require('get-image-colors')
 let user = null;
-let timerLocked = new Array();
 let app = express();
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
@@ -56,10 +55,11 @@ function checkIfDeviceNameExists() {
     await firebase.database().ref('users/' + user.uid + '/devices/' + req.body.deviceId + "/name").once("value", async snapshot => {
       if (snapshot.exists()) {
         res.status(403);
+        console.log("tuk");
         res.redirect(url.format({
           pathname:"/registerDevice",
           query: {
-            "error": "You have already registered a device with this name!"
+            "error": "A device with this name or ID has already been registered!"
           }}))
       } else
         next();
@@ -243,42 +243,6 @@ app.post('/register', function(req, res){
 
 
   }
-
-
-});
-
-// POST /things
-app.post("/registerDevice", async function (req, res){
-  const deviceName = req.body["deviceName"];
-  const thingId = req.body["deviceId"];
-  const link = 'http://localhost:3001/thing/' + thingId;
-  const response = await fetch(link);
-  // fetch "/thing/" + thingId
-  const response_body = await response.json();
-  if(!response_body.features.Ownership.properties.isClaimed){
-    await firebase.database().ref('users/' + user.uid + '/devices/' + deviceId + "/name").once("value", async snapshot => {
-      if (snapshot.exists()) {
-        const name = snapshot.val();
-        res.status(403);
-        res.render("deviceRegistration", {er_device_id: "You've already registered a device with this name!"});
-
-
-      } else {
-        const url = "http://localhost:3001/claimThing/" + thingId + '/' + user.email
-        await (fetch(url));
-        let userNameRef = firebase.database().ref('users/' + user.uid + '/devices/' + deviceId);
-        await userNameRef.child('name').set(deviceName);
-        res.redirect('/');
-
-      }
-    })
-
-
-  }
-  else{
-    res.render("deviceRegistration", {er_device_id: "already claimed!"});
-  }
-
 
 
 });

@@ -7,7 +7,7 @@ html
             if things
                 ul
                     each thing in things
-                        a(href="/retrieveInfo/" + thing.key)
+                        a(href="/things/" + thing.key)
                             button(type="button")=thing.value + " ID: " + thing.key
 
 
