@@ -1,10 +1,12 @@
 "use strict";
 let httpProxy = require('http-proxy');
+const url = require('url');
 let express = require("express");
 let firebase = require("firebase/app");
 require("firebase/firestore");
 require("firebase/auth");
 require("firebase/database");
+let methodOverride = require('method-override')
 let path = require("path");
 const multer = require('multer');
 const getColors = require('get-image-colors')
@@ -23,8 +25,14 @@ let serverProxy = httpProxy.createProxyServer();
 let l = "http://localhost:3001/"
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(methodOverride('_method'))
 app.get("/things/:tid", sendToProxy());
-app.post("/things/:tid/color", sendToProxy());
+app.put("/things/:tid/color", sendToProxy());
+app.put("/things/:tid/state", sendToProxy());
+app.post("/things/:tid/timer", sendToProxy());
+app.delete("/things/:tid/timer", sendToProxy());
+app.post("/things", checkIfDeviceNameExists(), sendToProxy(),registerDeviceInDatabase());
+
 serverProxy.on('proxyReq', (proxyReq, req) => {
   if (req.body) {
     const bodyData = JSON.stringify(req.body);
@@ -43,6 +51,30 @@ function sendToProxy() {
     serverProxy.web(req, res, {target: l});
   }
 }
+function checkIfDeviceNameExists() {
+  return async (req, res, next) => {
+    await firebase.database().ref('users/' + user.uid + '/devices/' + req.body.deviceId + "/name").once("value", async snapshot => {
+      if (snapshot.exists()) {
+        res.status(403);
+        res.redirect(url.format({
+          pathname:"/registerDevice",
+          query: {
+            "error": "You have already registered a device with this name!"
+          }}))
+      } else
+        next();
+    })
+  }
+}
+function registerDeviceInDatabase(){
+  return async (res,req) => {
+    let userNameRef = firebase.database().ref('users/' + user.uid + '/devices/' + deviceId);
+    await userNameRef.child('name').set(req.body.deviceName);
+    res.redirect('/');
+  }
+}
+
+
 //multer options
 const upload = multer({
   limits: {
@@ -100,53 +132,6 @@ app.listen(port, function () {
   console.log("Example app listening at http://localhost:" + port);
 });
 
-// PUT /things/:tid/color
-// Body: JSON with color {"color": "#ffaaff"}
-app.get('/colorChange/:tid',checkSignIn, async function (req,res){
-  const color = req.query.color;
-  const thing_id = req.params.tid
-  const link = 'http://localhost:3001/setColor/'+ thing_id+'/' + color;
-  await fetch(link);
-  res.redirect('back');
-
-})
-
-// POST /things/:tid/timers
-// Body: JSON with time field {"time": 123456}
-// Response: JSON with timer id {"id": 123123}
-app.get('/setTimer/:tid/:time',checkSignIn, async function (req,res){
-  const time = req.params.time;
-  const thing_id = req.params.tid;
-  const link = 'http://localhost:3001/setTimer/'+ thing_id+'/' + time*60000;
-  await fetch(link);
-  timerLocked.push(thing_id);
-  res.redirect('back');
-
-})
-// DELETE /things/:tid/timers/:timerid
-app.get('/stopTimer/:tid', checkSignIn, async function (req, res){
-  const thing_id = req.params.tid;
-  const link = 'http://localhost:3001/stopTimer/'+ thing_id;
-  await fetch(link);
-  timerLocked.splice(timerLocked.indexOf(thing_id));
-  res.redirect('back');
-})
-
-// GET /things/:tid
-app.get('/user/things/:tid',checkSignIn, async function (req, res) {
-  const thing_id = req.params.tid;
-  const response = await fetch(new URL("/things/" + thing_id, "http://localhost:3000"));
-  console.log(response);
-  const response_body = await response.json();
-  if (timerLocked.includes(thing_id)){
-    res.render("index", {thing_id: thing_id, led_color: response_body.features.ledLights.properties.color, timer_locked: true, image:image.toString('base64'), colors:colors});
-
-  }
-  else{
-    res.render("index", {thing_id: thing_id, led_color: response_body.features.ledLights.properties.color, image:image.toString('base64'), colors:colors});
-
-  }
-});
 function checkSignIn(req, res, next){
   if(user){
     next();     //If a user is logged in, proceed to page
@@ -188,12 +173,15 @@ app.get('/login', function (req, res){
   res.render("login");
 });
 app.get('/registerDevice',checkSignIn, function (req, res){
-  res.render("deviceRegistration");
+  let registration_error;
+  if(req.query.error){
+    registration_error = req.query.error
+  }
+  res.render("deviceRegistration",{er_device_id: registration_error});
+
 });
 
-app.post('/unlockTimerFor/:tid', function (req, res){
-  timerLocked.splice(timerLocked.indexOf(req.params.tid));
-})
+
 app.post('/login', function (req, res){
   const email = req.body["email"];
   const password = req.body["password"];
@@ -258,28 +246,7 @@ app.post('/register', function(req, res){
 
 
 });
-// PUT /things/:tid/state
-// Body: JSON with state {"state": true}
-app.get("/turnOff/:tid", async function (req, res){
-  const thingId = req.params.tid;
-  let link = 'http://localhost:3001/turnOff/' + thingId;
-  await fetch(link);
-  res.redirect("/retrieveInfo/" + thingId);
-});
-// PUT /things/:tid/state
-// MERGE WITH ABOVE
-// Body: JSON with state {"state": false}
-app.get("/turnOn/:tid", async function (req, res){
-  const thingId = req.params.tid;
-  let link = 'http://localhost:3001/retrieve/' + thingId;
-  const response = await fetch(link);
-  const response_body = await response.json();
-  let color = (response_body.features.ledLights.properties.color).split("#");
-  color = color[1];
-  link = 'http://localhost:3001/turnOn/'+ thingId+'/' + color;
-  await fetch(link);
-  res.redirect("/retrieveInfo/" + thingId);
-})
+
 // POST /things
 app.post("/registerDevice", async function (req, res){
   const deviceName = req.body["deviceName"];

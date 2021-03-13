@@ -5,28 +5,28 @@ html
         p= thing_id
         p= led_color
         block content
-            form(method='POST' action='/things/' + thing_id + "/color")
+            form(method='POST' action='/things/' + thing_id + "/color" + "?_method=PUT")
                 div.form-group
                     section#s_color_picker_id
                         canvas#color_picker(width=200, height=200)
                     input#s_color.form-control(name='color', value=color)
                 button.btn.btn-primary(type='submit') Change color
             if timer_locked
-                a(href="/stopTimer/" + thing_id)
-                    button(type="button") Cancel
+                form(method='POST' action='/things/' + thing_id + "/timer" + "?_method=DELETE")
+                    button.btn.btn-primary(type='submit') Cancel
             else
-                a(href="/setTimer/" + thing_id + "/" + 0.5)
-                    button(type="button") 5
-                a(href="/setTimer/" + thing_id + "/" + 15)
-                    button(type="button") 15
-                a(href="/setTimer/" + thing_id + "/" + 30)
-                    button(type="button") 30
+                form(method='POST' action='/things/' + thing_id + "/timer")
+                    button.btn.btn-primary(type='submit', name ='time', value=3000) 5
+                form(method='POST' action='/things/' + thing_id + "/timer")
+                    button.btn.btn-primary(type='submit', name ='time', value=3000) 15
+                form(method='POST' action='/things/' + thing_id + "/timer")
+                    button.btn.btn-primary(type='submit', name ='time', value=3000) 30
 
-            a(href="/turnOn/" + thing_id)
-                button(type="button") ON
+            form(method='POST' action='/things/' + thing_id + "/state" + "?_method=PUT")
+                button.btn.btn-primary(type='submit', name ='state', value="on") ON
 
-            a(href="/turnOff/" + thing_id)
-                button(type="button") OFF
+            form(method='POST' action='/things/' + thing_id + "/state" + "?_method=PUT")
+                button.btn.btn-primary(type='submit', name ='state', value="off") OFF
 
             form(method='post', enctype='multipart/form-data', action="/upload/" + thing_id)
                 input(type='file', name='upload')

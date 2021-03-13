@@ -5,12 +5,13 @@ block content
                 h1.display-4.m-b-2 Register a device
 
                 // register device form
-                form(method='POST' action='/registerDevice')
+                form(method='POST' action='/things')
                     div.form-group
                         label(for='deviceName') Device name:
                         input#deviceName.form-control(placeholder='e.g Bedroom lights', name='deviceName', value=deviceName)
                     div.form-group
                         label(for='deviceId') Device Id:
                         input#deviceId.form-control(name='deviceId', value=deviceId)
-                        p=er_device_id
+                        if er_device_id
+                            p=er_device_id
                     button.btn.btn-primary(type='submit') Submit
