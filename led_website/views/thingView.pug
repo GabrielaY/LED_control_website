@@ -1,0 +1,9 @@
+html
+    head
+        title= "PixieColor"
+    body
+        if things
+            ul
+                each thing in things
+                    a(href="/things/" + thing.key)
+                        button(type="button")=thing.value + " ID: " + thing.key

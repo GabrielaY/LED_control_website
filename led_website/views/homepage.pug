@@ -4,11 +4,8 @@ html
     body
         if user
             p You are logged in!
-            if things
-                ul
-                    each thing in things
-                        a(href="/things/" + thing.key)
-                            button(type="button")=thing.value + " ID: " + thing.key
+            a(href="/things")
+                button(type="button") Things
 
 
         else
