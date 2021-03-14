@@ -6,15 +6,31 @@ let my_token = "";
 let path = require("path");
 let my_token_expire_time = Date.now();
 let app = express();
+let image;
 let fetch = require('node-fetch');
 let port = 3001;
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.set("view engine", "pug");
+const multer = require('multer');
 app.set("views", path.join(__dirname, "views"));
 const render = require("pug");
 let timers = new Map();
-
+//multer options
+const upload = multer({
+    limits: {
+        fileSize: 1000000,
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) {
+            cb(new Error('Please upload an image.'))
+        }
+        cb(undefined, true)
+    }
+})
+{
+    Buffer
+}
 let options = {
     'method': 'POST',
     'url': 'https://access.bosch-iot-suite.com/token HTTP/1.1',
@@ -98,22 +114,19 @@ app.put('/things/:tid/color', ensureToken(), async function (req, res) {
     res.status(202);
     res.redirect("/things/" + req.params.tid);
 });
-
-app.post('/colorTransition/:tid/', async function (req, res) {
-    console.log(req.body);
-    await ensureToken();
+app.post('/things/:tid/colors', ensureToken(), async function (req, res) {
     const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/colorTransition?timeout=0', {
         method: 'POST',
         headers: {
             'Authorization': "Bearer " + my_token},
-        body: req.body  
+        body: req.body.colors
     });
 
-    res.send("Success");
+    res.redirect("/things/" + req.params.tid);
 });
 function checkDesiredState(){
     return async (req,res, next) =>{
-        if (req.state == "off"){
+        if (req.body.state == "off"){
             next('route');
         }
         else {
@@ -153,6 +166,7 @@ app.post('/things/:tid/timer', ensureToken(), async function (req, res) {
                 'Authorization': "Bearer " + my_token}
         });
         timers.delete(thing_id);
+
     }, req.body.time)
 
     timers.set(thing_id, timer_id);

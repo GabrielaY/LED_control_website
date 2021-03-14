@@ -28,7 +28,7 @@ html
             form(method='POST' action='/things/' + thing_id + "/state" + "?_method=PUT")
                 button.btn.btn-primary(type='submit', name ='state', value="off") OFF
 
-            form(method='post', enctype='multipart/form-data', action="/upload/" + thing_id)
+            form(method='post', enctype='multipart/form-data', action="/things/" + thing_id + "/colors")
                 input(type='file', name='upload')
                 button.btn.btn-primary(type='submit') Upload
             if image

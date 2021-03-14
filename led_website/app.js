@@ -19,9 +19,31 @@ const render = require("pug");
 let image = false;
 let colors = false;
 let port = 3000;
-let postUrls = ["/things/:tid/color", "/things/:tid/state", ""]
 let serverProxy = httpProxy.createProxyServer();
 let l = "http://localhost:3001/"
+//multer options
+const upload = multer({
+    limits: {
+        fileSize: 1000000,
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) {
+            cb(new Error('Please upload an image.'))
+        }
+        cb(undefined, true)
+    }
+})
+{
+    Buffer
+}
+const get_color_options_png = {
+    count: 10,
+    type: 'image/png'
+}
+const get_color_options_jpg = {
+    count: 10,
+    type: 'image/jpg'
+}
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(methodOverride('_method'))
@@ -29,6 +51,7 @@ app.get("/things/:tid", sendToProxy());
 app.put("/things/:tid/color", sendToProxy());
 app.put("/things/:tid/state", sendToProxy());
 app.post("/things/:tid/timer", sendToProxy());
+app.post("/things/:tid/colors",  upload.single('upload'), getImageColors(), sendToProxy());
 app.delete("/things/:tid/timer", sendToProxy());
 app.post("/things", checkIfDeviceNameExists(), sendToProxy(), registerDeviceInDatabase());
 
@@ -79,28 +102,36 @@ function registerDeviceInDatabase() {
 }
 
 
-//multer options
-const upload = multer({
-    limits: {
-        fileSize: 1000000,
-    },
-    fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) {
-            cb(new Error('Please upload an image.'))
-        }
-        cb(undefined, true)
-    }
-})
-{
-    Buffer
-}
 
+function getImageColors(){
+    return async (req,res,next) => {
+        image = req.file.buffer;
+        const image_type = req.file.mimetype;
+        try{
+            if(image_type == 'image/jpeg'){
+                colors = await getColors(image, get_color_options_jpg);
+            }
+            else if(image_type == 'image/png'){
+                colors = await getColors(image, get_color_options_png);
+            }
+            colors = colors.map(color => color.hex());
+            req.body.colors = colors;
+            next();
+        }
+        catch (e){
+            res.status(406);
+            res.redirect('/things/' + req.params.tid);
+        }
+
+    }
+}
 // POST /things/:tid/photo
 app.post('/upload/:tid', upload.single('upload'), async (req, res) => {
     try {
         image = req.file.buffer
+        console.log(req.file.buffer);
         colors = await getColors(image, 'image/png');
-        colors = colors.map(color => color.hex())
+        colors = colors.map(color => color.hex());
         console.log(colors);
         const thing_id = req.params.tid;
         console.log(thing_id);

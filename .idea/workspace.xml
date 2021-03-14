@@ -20,8 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e42e4f2-272e-4c08-81ee-c89f04053610" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/led_website/views/thingView.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/led_website/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/auth_connector.js" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/auth_connector.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/views/index.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/index.pug" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,17 +75,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Node.js.auth.js">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="app.js" type="NodeJSConfigurationType" path-to-node="$PROJECT_DIR$/../../../../Program Files/nodejs/node" nameIsGenerated="true" path-to-js-file="led_website/app.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
@@ -131,7 +122,9 @@
       <workItem from="1615569551119" duration="2187000" />
       <workItem from="1615628775431" duration="2705000" />
       <workItem from="1615633791039" duration="4843000" />
-      <workItem from="1615645327075" duration="18585000" />
+      <workItem from="1615645327075" duration="19173000" />
+      <workItem from="1615716586720" duration="2626000" />
+      <workItem from="1615724733057" duration="6481000" />
     </task>
     <servers />
   </component>
@@ -159,22 +152,22 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1613296335315" />
-    <state width="1237" height="183" key="GridCell.Tab.0.bottom" timestamp="1615667515325">
+    <state width="1237" height="207" key="GridCell.Tab.0.bottom" timestamp="1615731713248">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1615667515325" />
-    <state width="1237" height="183" key="GridCell.Tab.0.center" timestamp="1615667515325">
+    <state width="1237" height="207" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1615731713248" />
+    <state width="1237" height="207" key="GridCell.Tab.0.center" timestamp="1615731713247">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1615667515325" />
-    <state width="1237" height="183" key="GridCell.Tab.0.left" timestamp="1615667515325">
+    <state width="1237" height="207" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1615731713247" />
+    <state width="1237" height="207" key="GridCell.Tab.0.left" timestamp="1615731713247">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1615667515325" />
-    <state width="1237" height="183" key="GridCell.Tab.0.right" timestamp="1615667515325">
+    <state width="1237" height="207" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1615731713247" />
+    <state width="1237" height="207" key="GridCell.Tab.0.right" timestamp="1615731713248">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="183" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1615667515325" />
+    <state width="1237" height="207" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1615731713247" />
     <state x="0" y="0" width="1020" height="667" key="dock-window-1" timestamp="1613904874219">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -187,5 +180,9 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="91" y="24" key="new project wizard/0.0.1280.680@0.0.1280.680" timestamp="1613295616665" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1615726155156">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1615726155156" />
   </component>
 </project>
