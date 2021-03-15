@@ -125,31 +125,6 @@ function getImageColors(){
 
     }
 }
-// POST /things/:tid/photo
-app.post('/upload/:tid', upload.single('upload'), async (req, res) => {
-    try {
-        image = req.file.buffer
-        console.log(req.file.buffer);
-        colors = await getColors(image, 'image/png');
-        colors = colors.map(color => color.hex());
-        console.log(colors);
-        const thing_id = req.params.tid;
-        console.log(thing_id);
-        const link = 'http://localhost:3001/colorTransition/' + thing_id;
-        let r = await fetch(link, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(colors)
-        });
-        res.redirect('back');
-    } catch (e) {
-        res.status(400).send(e)
-    }
-}, (error, req, res, next) => {
-    res.status(400).send({error: error.message})
-})
 let firebaseConfig = {
     apiKey: "AIzaSyAlB2GVoYR_aCneXN69zabcUbp5vdgXSR8",
     authDomain: "led-controll-iot.firebaseapp.com",
