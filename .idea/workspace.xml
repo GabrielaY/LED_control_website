@@ -20,8 +20,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e42e4f2-272e-4c08-81ee-c89f04053610" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/led_website/views/editPassword.pug" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/led_website/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/auth_connector.js" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/auth_connector.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/views/deviceRegistration.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/deviceRegistration.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/views/homepage.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/homepage.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/views/index.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/index.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/views/login.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/login.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/views/registration.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/registration.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/led_website/views/thingView.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/thingView.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +67,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/led_website/auth_connector.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -72,7 +83,18 @@
       <recent name="C:\Users\gabriela\Documents\LED_control_website\led_website\views" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.auth.js">
+  <component name="RunManager" selected="Node.js.app.js">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="app.js" type="NodeJSConfigurationType" path-to-node="$PROJECT_DIR$/../../../../Program Files/nodejs/node" nameIsGenerated="true" path-to-js-file="led_website/app.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
@@ -123,6 +145,20 @@
       <workItem from="1615645327075" duration="19173000" />
       <workItem from="1615716586720" duration="2626000" />
       <workItem from="1615724733057" duration="9473000" />
+      <workItem from="1615922159252" duration="14382000" />
+      <workItem from="1615964704112" duration="5188000" />
+      <workItem from="1616669000356" duration="457000" />
+      <workItem from="1616670554659" duration="10456000" />
+      <workItem from="1617347707406" duration="786000" />
+      <workItem from="1617365071016" duration="6122000" />
+      <workItem from="1617879096729" duration="35000" />
+      <workItem from="1617879543717" duration="266000" />
+      <workItem from="1622103155722" duration="265000" />
+      <workItem from="1622317329224" duration="2815000" />
+      <workItem from="1622369461182" duration="595000" />
+      <workItem from="1622576049443" duration="727000" />
+      <workItem from="1622631288696" duration="5981000" />
+      <workItem from="1622713912892" duration="12523000" />
     </task>
     <servers />
   </component>
@@ -142,42 +178,30 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1613296340277">
+    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1617879781357">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1613296340277" />
-    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1613296335315">
+    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1617879781357" />
+    <state width="1237" height="207" key="GridCell.Tab.0.bottom" timestamp="1622739771573">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1613296335315" />
-    <state width="1237" height="207" key="GridCell.Tab.0.bottom" timestamp="1615741960977">
+    <state width="1237" height="207" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1622739771573" />
+    <state width="1237" height="207" key="GridCell.Tab.0.center" timestamp="1622739771573">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="207" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1615741960977" />
-    <state width="1237" height="207" key="GridCell.Tab.0.center" timestamp="1615741960977">
+    <state width="1237" height="207" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1622739771573" />
+    <state width="1237" height="207" key="GridCell.Tab.0.left" timestamp="1622739771573">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="207" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1615741960977" />
-    <state width="1237" height="207" key="GridCell.Tab.0.left" timestamp="1615741960977">
+    <state width="1237" height="207" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1622739771573" />
+    <state width="1237" height="207" key="GridCell.Tab.0.right" timestamp="1622739771573">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="207" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1615741960977" />
-    <state width="1237" height="207" key="GridCell.Tab.0.right" timestamp="1615741960977">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state width="1237" height="207" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1615741960977" />
-    <state x="0" y="0" width="1020" height="667" key="dock-window-1" timestamp="1613904874219">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="0" y="0" width="1020" height="667" key="dock-window-1/0.0.1280.680@0.0.1280.680" timestamp="1613904874219" />
+    <state width="1237" height="207" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1622739771573" />
     <state x="0" y="0" width="587" height="680" key="find.popup" timestamp="1615667470111">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="0" y="0" width="587" height="680" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1615667470111" />
-    <state x="91" y="24" key="new project wizard" timestamp="1613295616665">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="91" y="24" key="new project wizard/0.0.1280.680@0.0.1280.680" timestamp="1613295616665" />
     <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1615726155156">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

@@ -1,16 +1,116 @@
 html
     head
         title= "PixieColor"
+        link(rel="preconnect" href="https://fonts.gstatic.com")
+        link(href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,700;1,400&display=swap" rel="stylesheet")
     body
         if user
-            p You are logged in!
+            h1.logo PixieColor
+
+
+            p.text Welcome back!
+            div.container
+                before
+                p.moto SPARK UP YOUR CREATIVITY
+                after
             a(href="/things")
-                button(type="button") Things
+                button.bt.pg(type="button") DEVICES
+            a(href="/changePassword")
+                button.bt.pg(type="button") CHANGE PASSWORD
+            a(href="/logout")
+                button.bt.pg(type="button") LOG OUT
+
 
 
         else
-            p Welcome to PixieColor!
-            a(href="/register")
-                button(type="button") Sign up
+            h1.logo PixieColor
+
+
+            p.text The best way to light it up!
+            div.container
+                before
+                p.moto SPARK UP YOUR CREATIVITY
+                after
+
+
             a(href="/login")
-                button(type="button") Sign in
+                button.bt(type="button") SIGN IN
+            a(href="/register")
+                button.bt(type="button") REGISTER
+
+        style.
+            body{
+                background: rgb(185, 93, 161);
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                background: linear-gradient(0deg, rgba(185, 93, 161, 1) 0%, rgba(211, 51, 51, 1) 100%);
+                margin: 0;
+            }
+            .container{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                min-width: 600px;
+            }
+            .moto{
+                width: 100%;
+                text-align: center;
+                font-family: 'Roboto Condensed', sans-serif;
+                color: white;
+                font-size: 13pt;
+
+            }
+
+            before,
+            after {
+                background-color: white;
+                content: "";
+                opacity: 70%;
+                display: inline-block;
+                height: 1px;
+                position: relative;
+                vertical-align: middle;
+                width: 80%;
+                color: white;
+            }
+            .logo{
+                display: inline-block;
+                margin-right: auto;
+                margin-bottom: 19px;
+                margin-left: auto;
+                margin-top: 1em;
+                padding: 15px 30px;
+                border: 8px solid #fff;
+                color: white;
+                font-family: 'Roboto Condensed', sans-serif;
+                font-weight: 1500;
+                font-size: 3.4em;
+                letter-spacing: 8px;
+            }
+            .text{
+                color: white;
+                font-family: "Colonna MT";
+                font-size: 1.8em;
+
+            }
+            .bt{
+                background-color: transparent;
+                border: solid 2px white;
+                margin: 5px 0;
+                min-width: 350px;
+                min-height: 38px;
+                font-family: 'Roboto Condensed', sans-serif;
+                font-size: 1.3em;
+                padding: 4px 29px;
+                color: white;
+            }
+            .bt:hover{
+                background-color: white;
+                color: #333333;
+                transition: 300ms;
+            }
+            .pg{
+
+            }

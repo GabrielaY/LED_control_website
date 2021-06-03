@@ -10,12 +10,9 @@ let methodOverride = require('method-override')
 let path = require("path");
 const multer = require('multer');
 const getColors = require('get-image-colors')
-let user = null;
 let app = express();
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
-let fetch = require('node-fetch');
-const render = require("pug");
 let image = false;
 let colors = false;
 let port = 3000;
@@ -77,7 +74,7 @@ function sendToProxy() {
 
 function checkIfDeviceNameExists() {
     return async (req, res, next) => {
-        await firebase.database().ref('users/' + user.uid + '/devices/' + req.body.deviceId + "/name").once("value", async snapshot => {
+        await firebase.database().ref('users/' + currentUser.uid + '/devices/' + req.body.deviceId + "/name").once("value", async snapshot => {
             if (snapshot.exists()) {
                 res.status(403);
                 console.log("tuk");
@@ -95,7 +92,7 @@ function checkIfDeviceNameExists() {
 
 function registerDeviceInDatabase() {
     return async (res, req) => {
-        let userNameRef = firebase.database().ref('users/' + user.uid + '/devices/' + deviceId);
+        let userNameRef = firebase.database().ref('users/' + currentUser.uid + '/devices/' + deviceId);
         await userNameRef.child('name').set(req.body.deviceName);
         res.redirect('/');
     }
@@ -138,12 +135,19 @@ let firebaseConfig = {
 // Initialize Firebase
 firebase["default"].initializeApp(firebaseConfig);
 const database = firebase.database();
+let currentUser = firebase.auth().currentUser;
 app.listen(port, function () {
     console.log("Example app listening at http://localhost:" + port);
 });
-
-function checkSignIn(req, res, next) {
+firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
+        currentUser = firebase.auth().currentUser;
+    } else {
+        currentUser = null;
+    }
+});
+function checkSignIn(req, res, next) {
+    if (currentUser) {
         next();     //If a user is logged in, proceed to page
     } else {
         res.redirect('/')
@@ -151,7 +155,7 @@ function checkSignIn(req, res, next) {
 }
 
 app.get('/things', async function (req, res) {
-    await database.ref().child("users").child(user.uid).child("devices").get().then(function (snapshot) {
+    await database.ref().child("users").child(currentUser.uid).child("devices").get().then(function (snapshot) {
         if (snapshot.exists()) {
             const things = snapshot.val();
             let names = [];
@@ -168,8 +172,8 @@ app.get('/things', async function (req, res) {
 })
 app.get('/', async function (req, res) {
 
-    if (user)
-        res.render("homepage", {user: user});
+    if (currentUser)
+        res.render("homepage", {user: currentUser});
     else
         res.render("homepage");
 });
@@ -178,6 +182,29 @@ app.get('/register', function (req, res) {
 });
 app.get('/login', function (req, res) {
     res.render("login");
+});
+app.get('/changePassword', function (req, res) {
+    res.render("editPassword");
+});
+app.post('/changePassword', function (req, res) {
+    const password = req.body["password"];
+    const password_conf = req.body["password_conf"];
+    if(password.length < 9){
+        res.render("editPassword", {er_pass: "Password should be at least 9 characters long!"});
+    }
+    else if(password == password_conf){
+        let user = firebase.auth().currentUser;
+        let newPassword = password_conf;
+
+        user.updatePassword(newPassword).then(function() {
+            res.redirect("/");
+        }).catch(function(error) {
+            const errorMessage = error.message;
+            res.render("editPassword", {er_pass: errorMessage});
+        });
+    }
+    else
+        res.render("editPassword", {er_pass: "Passwords don't match!"});
 });
 app.get('/registerDevice', checkSignIn, function (req, res) {
     let registration_error;
@@ -196,9 +223,9 @@ app.post('/login', function (req, res) {
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
             // Signed in
-            user = userCredential.user;
+
             res.status(200);
-            res.redirect("/")
+            res.redirect("/");
 
         })
         .catch((error) => {
@@ -206,6 +233,13 @@ app.post('/login', function (req, res) {
             res.render("login", {er_email_or_pass: errorMessage, email: email});
         });
 });
+
+app.get('/logout', function (req, res) {
+    firebase.auth().signOut();
+    res.status(200);
+    res.redirect("/");
+});
+
 app.post('/register', function (req, res) {
     const email = req.body["email"];
     const password = req.body["password"];
@@ -239,7 +273,6 @@ app.post('/register', function (req, res) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed in
-                user = userCredential.user;
 
                 res.status(200);
                 res.redirect("/")

@@ -126,6 +126,7 @@ app.post('/things/:tid/colors', ensureToken(), async function (req, res) {
 });
 function checkDesiredState(){
     return async (req,res, next) =>{
+        console.log(req.body.state);
         if (req.body.state == "off"){
             next('route');
         }
@@ -160,13 +161,12 @@ app.put('/things/:tid/state', async function (req, res) {
 app.post('/things/:tid/timer', ensureToken(), async function (req, res) {
     const thing_id = req.params.tid;
     const timer_id = setTimeout(async function() {
-        await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/off?timeout=0', {
-            method: 'POST',
-            headers: {
-                'Authorization': "Bearer " + my_token}
-        });
         timers.delete(thing_id);
-
+        await fetch('http://localhost:3000/things/'+ thing_id + '/state', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"state": "off"})
+        });
     }, req.body.time)
 
     timers.set(thing_id, timer_id);

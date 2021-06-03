@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "@google-cloud/connect-firestore": "^2.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
@@ -16,6 +17,8 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "@google-cloud/firestore": "^4.12.2",
+    "express-session": "^1.17.2",
     "get-image-colors": "^4.0.0",
     "http-proxy": "^1.18.1",
     "method-override": "^3.0.0",
