@@ -1,82 +1,99 @@
-import json
-import multiprocessing
-import time
-
+from dt.src.ditto.client import Client
+from dt.src.ditto.protocol.topic import Topic
+from dt.src.ditto.protocol.envelope import Envelope
+from ledFill import led_fill, led_off, led_on, color_transition, full_gradient_list
 import board
 import neopixel
-import paho.mqtt.client as mqtt
-from device_event import DeviceEvent
-from device_info import DeviceInfo
-from protocol.envelope import Envelope
-from protocol.topic import Topic, TopicGroup, TopicChannel, TopicCriterion, TopicAction
-from ledFill import led_fill, led_off, led_on, color_transition, full_gradient_list
+import multiprocessing
+import time
+import json
+from datetime import datetime
+from threading import Timer
 
-EDGE_CLOUD_CONNECTOR_TOPIC_DEV_INFO = "edge/thing/response"
-
-def client_on_connect(self, userdata, flags, rc):
-    print("Connected")
-    
-    client.subscribe(EDGE_CLOUD_CONNECTOR_TOPIC_DEV_INFO)
-    client.subscribe("command///req//#")
-
-def client_on_message(self, userdata, msg):
-    global running
-    global chase
-    print(msg.payload)
-    #if msg.topic == EDGE_CLOUD_CONNECTOR_TOPIC_DEV_INFO:
-     #   devInfo = DeviceInfo()
-      #  devInfo.unmarshal_json(msg.payload)
-       # return
-    
-    if msg.topic == "command///req//colorTransition":
-        if running == True:
-            chase.terminate()
-            running = False
-        event = DeviceEvent()
-        event.unmarshal_json(msg.payload)
-        chase = multiprocessing.Process(target = color_transition, args=[pixels, full_gradient_list(event.value.split(','))])
-        chase.start()
-        running = True
-            
-    elif msg.topic == "command///req//off":
-        if running == True:
-            chase.terminate()
-            running = False
-        response_envelope = Envelope().with_topic(t).with_path("/features/ledLights/properties/status").with_value(led_off(pixels))
-        client.publish("e/t0081db5c97654ffa8a54a3a71021dc67_hub/led_raspberry:myRspbLed", response_envelope.marshal_json(), qos=1)
-                
-    elif msg.topic == "command///req//on":
-        event = DeviceEvent()
-        event.unmarshal_json(msg.payload)
-        response_envelope = Envelope().with_topic(t).with_path("/features/ledLights/properties/status").with_value(led_on(pixels, event.value))
-        client.publish("e/t0081db5c97654ffa8a54a3a71021dc67_hub/led_raspberry:myRspbLed", response_envelope.marshal_json(), qos=1)
-        
-    elif msg.topic == "command///req//ledColor":
-        if running == True:
-            chase.terminate()
-            running = False
-        event = DeviceEvent()
-        event.unmarshal_json(msg.payload)
-        response_envelope = Envelope().with_topic(t).with_path("/features/ledLights/properties/color").with_value(led_fill(pixels, event.value))
-        client.publish("e/t0081db5c97654ffa8a54a3a71021dc67_hub/led_raspberry:myRspbLed", response_envelope.marshal_json(), qos=1)  
-    
-
-
+modify_topic = Topic().from_string("led_raspberry/myRspbLed/things/twin/commands/modify")
 pixels = neopixel.NeoPixel(board.D18, 54)
-client = mqtt.Client("myRaspberry", None, None, mqtt.MQTTv311)
-client.on_connect = client_on_connect
-client.on_message = client_on_message
-
+ditto_python_client = Client()
 running = False
 chase = None
-client.connect("192.168.91.249", 1883, 60)
-t = Topic(
-    namespace="led_raspberry",
-    entity_id="myRspbLed",
-    group=TopicGroup.GroupThings,
-    channel=TopicChannel.ChannelTwin,
-    criterion=TopicCriterion.CriterionCommands,
-    action=TopicAction.ActionModify
-)
 
-client.loop_forever()
+def check_if_running():
+    global running
+    global chase
+    if running == True:
+      chase.terminate()
+      running = False
+      
+def start_event(time, event):
+    global pixels
+    x = datetime.today()
+    time = time.split(':')
+    y = x.replace(hour=int(time[0]), minute=int(time[1]), second=0, microsecond=0)
+    delta_t=y-x
+
+    if event == "off":
+      t = Timer(delta_t.seconds, led_off, [pixels])
+      t.start()
+    if event == "on":
+      t = Timer(delta_t.seconds, led_on, [pixels, "#ffffff"])
+      t.start()
+    
+def start_color_transition(colors):
+    global running
+    global chase
+    chase = multiprocessing.Process(target = color_transition, args=[pixels, full_gradient_list(colors)])
+    chase.start()
+    running = True
+    
+def on_message(request_id, envelope):
+    action = str(envelope.topic.action)
+    value = envelope.value
+    check_if_running()
+    
+    if action == "ledColor":
+      led_fill(pixels, value)
+      path = "/features/ledLights/properties/color"
+      
+    elif action == "off":
+      led_off(pixels)
+      path = "/features/ledLights/properties/status"
+      
+    elif action == "on":
+      led_on(pixels, value)
+      path = "/features/ledLights/properties/status"
+      
+    elif action == "event":
+      info = json.loads(envelope.value)
+      print(info["time"])
+      start_event(info["time"], info["state"])
+      return
+      
+    elif action == "colorTransition":
+      start_color_transition(value.split(','))
+      return
+      
+    response_envelope = Envelope().with_topic(modify_topic).with_path(path).with_value(value)
+    ditto_python_client.send(response_envelope)
+    
+    
+
+#def on_log(client, log_level, log_msg):
+#   print(log_msg)
+    
+def client_on_connect(client):
+    print("Conected")
+    global ditto_python_client
+    ditto_python_client.subscribe(on_message)
+
+#ditto_python_client.enable_logger(True)
+#ditto_python_client.on_log = on_log
+ditto_python_client.on_connect = client_on_connect
+ditto_python_client.connect("localhost", 1883, 60)
+
+
+
+while True:
+    continue
+
+
+
+
