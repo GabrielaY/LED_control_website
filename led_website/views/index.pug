@@ -30,14 +30,24 @@ html
                         button.timer.btn.btn-primary(type='submit', name ='time', value=3000) 15
                     form.forma(method='POST' action='/things/' + thing_id + "/timer")
                         button.timer.btn.btn-primary(type='submit', name ='time', value=3000) 30
-            input#switch(type="checkbox")
-            label(for="switch")
-            //div.colorchange
-            //    form.forma(method='POST' action='/things/' + thing_id + "/state" + "?_method=PUT")
-            //        button.bt.btn.btn-primary(type='submit', name ='state', value="on") ON
-            //
-            //    form.forma(method='POST' action='/things/' + thing_id + "/state" + "?_method=PUT")
-            //        button.bt.btn.btn-primary(type='submit', name ='state', value="off") OFF
+            //input#switch(type="checkbox")
+            //label#swl(for="switch")
+            form.forma(method='POST' action='/things/' + thing_id + "/event")
+                input(type="time" style={"border": "solid white", "background-color": "transparent", "color": "white"}, name="time")
+
+                div.colorchange
+                    input#on(type="radio", name="state", value="on")
+                    label(for="on", style="color:white; font-family: 'Roboto Condensed', sans-serif;") ON
+                    input#off(type="radio", name="state", value="off")
+                    label(for="off", style="color:white; font-family: 'Roboto Condensed', sans-serif;") OFF
+                button.color-btn.btn.btn-primary(type='submit') SET
+
+            div.colorchange
+                form.forma(method='POST' action='/things/' + thing_id + "/state" + "?_method=PUT")
+                    button.bt.btn.btn-primary(type='submit', name ='state', value="on") ON
+
+                form.forma(method='POST' action='/things/' + thing_id + "/state" + "?_method=PUT")
+                    button.bt.btn.btn-primary(type='submit', name ='state', value="off") OFF
 
             form.forma(method='post', enctype='multipart/form-data', action="/things/" + thing_id + "/colors")
 
@@ -133,7 +143,7 @@ html
                     visibility: hidden;
                 }
 
-                label {
+                #swl {
                     cursor: pointer;
                     text-indent: -9999px;
                     width: 70px;
@@ -144,7 +154,7 @@ html
                     position: relative;
                 }
 
-                label:after {
+                #swl:after {
                     content: '';
                     position: absolute;
                     top: 5px;
@@ -157,12 +167,12 @@ html
                 }
 
 
-                input:checked + label:after {
+                input:checked + #swl:after {
                     left: calc(100% - 5px);
                     transform: translateX(-100%);
                 }
 
-                label:active:after {
+                #swl:active:after {
                     width: 50px;
                 }
                 .colorchange {
@@ -174,6 +184,10 @@ html
                 #timers {
                     display: flex;
                     flex-direction: row;
+                }
+
+                input[type="time"]::-webkit-calendar-picker-indicator {
+                    filter: invert(100%);
                 }
                 .color-btn {
                     background-color: transparent;

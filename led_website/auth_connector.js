@@ -112,7 +112,7 @@ app.put('/things/:tid/color', ensureToken(), async function (req, res) {
         body: "#" +color
     });
     res.status(202);
-    res.redirect("/things/" + req.params.tid);
+    res.redirect('back');
 });
 app.post('/things/:tid/colors', ensureToken(), async function (req, res) {
     const response = await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/colorTransition?timeout=0', {
@@ -154,6 +154,28 @@ app.put('/things/:tid/state', async function (req, res) {
             'Authorization': "Bearer " + my_token}
     });
 
+    res.status(202);
+    res.redirect("/things/" + req.params.tid);
+});
+
+app.put('/things/:tid/state', async function (req, res) {
+    await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/off?timeout=0', {
+        method: 'POST',
+        headers: {
+            'Authorization': "Bearer " + my_token}
+    });
+
+    res.status(202);
+    res.redirect("/things/" + req.params.tid);
+});
+
+app.post('/things/:tid/event', ensureToken(), async function (req, res) {
+    await fetch('https://things.eu-1.bosch-iot-suite.com/api/2/things/led_raspberry:' + req.params.tid +'/features/ledLights/inbox/messages/event?timeout=0', {
+        method: 'POST',
+        headers: {
+            'Authorization': "Bearer " + my_token},
+        body: JSON.stringify(req.body)
+    });
     res.status(202);
     res.redirect("/things/" + req.params.tid);
 });

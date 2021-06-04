@@ -44,13 +44,14 @@ const get_color_options_jpg = {
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(methodOverride('_method'))
-app.get("/things/:tid", sendToProxy());
-app.put("/things/:tid/color", sendToProxy());
-app.put("/things/:tid/state", sendToProxy());
-app.post("/things/:tid/timer", sendToProxy());
-app.post("/things/:tid/colors",  upload.single('upload'), getImageColors(), sendToProxy());
-app.delete("/things/:tid/timer", sendToProxy());
-app.post("/things", checkIfDeviceNameExists(), sendToProxy(), registerDeviceInDatabase());
+app.get("/things/:tid", checkSignIn(), sendToProxy());
+app.put("/things/:tid/color", checkSignIn(), sendToProxy());
+app.put("/things/:tid/state", checkSignIn(), sendToProxy());
+app.post("/things/:tid/event", checkSignIn(), sendToProxy());
+app.post("/things/:tid/timer", checkSignIn(), sendToProxy());
+app.post("/things/:tid/colors", checkSignIn(), upload.single('upload'), getImageColors(), sendToProxy());
+app.delete("/things/:tid/timer", checkSignIn(), sendToProxy());
+app.post("/things", checkSignIn(), checkIfDeviceNameExists(), sendToProxy(), registerDeviceInDatabase());
 
 serverProxy.on('proxyReq', (proxyReq, req) => {
     if (req.body) {
@@ -147,14 +148,17 @@ firebase.auth().onAuthStateChanged(function(user) {
     }
 });
 function checkSignIn(req, res, next) {
-    if (currentUser) {
-        next();     //If a user is logged in, proceed to page
-    } else {
-        res.redirect('/')
+    return async (req, res, next) =>{
+        if (currentUser) {
+            next();     //If a user is logged in, proceed to page
+        } else {
+            res.redirect('/')
+        }
     }
+
 }
 
-app.get('/things', async function (req, res) {
+app.get('/things', checkSignIn(), async function (req, res) {
     await database.ref().child("users").child(currentUser.uid).child("devices").get().then(function (snapshot) {
         if (snapshot.exists()) {
             const things = snapshot.val();

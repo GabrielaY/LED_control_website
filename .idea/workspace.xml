@@ -19,20 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e42e4f2-272e-4c08-81ee-c89f04053610" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/led_website/views/editPassword.pug" afterDir="false" />
+    <list default="true" id="9e42e4f2-272e-4c08-81ee-c89f04053610" name="Default Changelist" comment="[Update] Updating firebase auth processes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/led_website/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/led_website/auth_connector.js" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/auth_connector.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/led_website/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/led_website/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/led_website/views/deviceRegistration.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/deviceRegistration.pug" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/led_website/views/homepage.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/homepage.pug" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/led_website/views/index.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/index.pug" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/led_website/views/login.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/login.pug" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/led_website/views/registration.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/registration.pug" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/led_website/views/thingView.pug" beforeDir="false" afterPath="$PROJECT_DIR$/led_website/views/thingView.pug" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,18 +74,7 @@
       <recent name="C:\Users\gabriela\Documents\LED_control_website\led_website\views" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.app.js">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Node.js.auth.js">
     <configuration name="app.js" type="NodeJSConfigurationType" path-to-node="$PROJECT_DIR$/../../../../Program Files/nodejs/node" nameIsGenerated="true" path-to-js-file="led_website/app.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
@@ -158,8 +138,18 @@
       <workItem from="1622369461182" duration="595000" />
       <workItem from="1622576049443" duration="727000" />
       <workItem from="1622631288696" duration="5981000" />
-      <workItem from="1622713912892" duration="12523000" />
+      <workItem from="1622713912892" duration="14113000" />
+      <workItem from="1622799845678" duration="3553000" />
+      <workItem from="1622831565455" duration="8168000" />
     </task>
+    <task id="LOCAL-00001" summary="[Update] Updating firebase auth processes">
+      <created>1622739941490</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1622739941490</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -177,27 +167,35 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="[Update] Updating firebase auth processes" />
+    <option name="LAST_COMMIT_MESSAGE" value="[Update] Updating firebase auth processes" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1617879781357">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1617879781357" />
-    <state width="1237" height="207" key="GridCell.Tab.0.bottom" timestamp="1622739771573">
+    <state width="1237" height="207" key="GridCell.Tab.0.bottom" timestamp="1622845692735">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="207" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1622739771573" />
-    <state width="1237" height="207" key="GridCell.Tab.0.center" timestamp="1622739771573">
+    <state width="1237" height="207" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1622845692735" />
+    <state width="1237" height="207" key="GridCell.Tab.0.center" timestamp="1622845692735">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="207" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1622739771573" />
-    <state width="1237" height="207" key="GridCell.Tab.0.left" timestamp="1622739771573">
+    <state width="1237" height="207" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1622845692735" />
+    <state width="1237" height="207" key="GridCell.Tab.0.left" timestamp="1622845692735">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="207" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1622739771573" />
-    <state width="1237" height="207" key="GridCell.Tab.0.right" timestamp="1622739771573">
+    <state width="1237" height="207" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1622845692735" />
+    <state width="1237" height="207" key="GridCell.Tab.0.right" timestamp="1622845692735">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="207" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1622739771573" />
+    <state width="1237" height="207" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1622845692735" />
+    <state x="233" y="74" key="Vcs.Push.Dialog.v2" timestamp="1622739967647">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="233" y="74" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1622739967647" />
     <state x="0" y="0" width="587" height="680" key="find.popup" timestamp="1615667470111">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
